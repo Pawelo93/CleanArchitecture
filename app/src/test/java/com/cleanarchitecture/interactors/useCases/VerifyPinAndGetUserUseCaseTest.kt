@@ -1,29 +1,16 @@
-package com.cleanarchitecture.interactors
+package com.cleanarchitecture.interactors.useCases
 
 import com.cleanarchitecture.entity.User
-import com.cleanarchitecture.interactors.useCases.GetUserUseCase
-import com.cleanarchitecture.interactors.useCases.VerifyPinAndGetUserUseCase
+import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
 import io.reactivex.Single
-import org.junit.Before
 
 import org.junit.Test
-import org.mockito.Mock
-import org.mockito.MockitoAnnotations
 
 class VerifyPinAndGetUserUseCaseTest {
 
-    lateinit var verifyPinAndGetUserUseCase: VerifyPinAndGetUserUseCase
-
-    @Mock
-    lateinit var getUserUseCase: GetUserUseCase
-
-    @Before
-    fun setUp() {
-        MockitoAnnotations.initMocks(this)
-        verifyPinAndGetUserUseCase =
-                VerifyPinAndGetUserUseCase(getUserUseCase)
-    }
+    private val getUserUseCase: GetUserUseCase = mock()
+    private val verifyPinAndGetUserUseCase = VerifyPinAndGetUserUseCase(getUserUseCase)
 
     @Test
     fun `throw error when pin is blank`() {

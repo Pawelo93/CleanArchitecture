@@ -1,28 +1,16 @@
-package com.cleanarchitecture.interactors
+package com.cleanarchitecture.interactors.useCases
 
 import com.cleanarchitecture.data.network.UserApi
 import com.cleanarchitecture.entity.User
-import com.cleanarchitecture.interactors.useCases.GetUserUseCase
+import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
 import io.reactivex.Single
-import org.junit.Before
 import org.junit.Test
-
-import org.mockito.Mock
-import org.mockito.MockitoAnnotations
 
 class GetUserUseCaseTest {
 
-    lateinit var getUserUseCase: GetUserUseCase
-
-    @Mock
-    lateinit var userApi: UserApi
-
-    @Before
-    fun setUp() {
-        MockitoAnnotations.initMocks(this)
-        getUserUseCase = GetUserUseCase(userApi)
-    }
+    private val userApi: UserApi = mock()
+    private val getUserUseCase = GetUserUseCase(userApi)
 
     @Test
     fun `loadUser returns user when api call is success`() {
