@@ -3,5 +3,5 @@
 
     <string name="blank_pin_error">Pin nie może być pusty!</string>
     <string name="string_pin_error">Pin może składać się tylko z cyfr!</string>
-    <string name="string_not_4_digits_error">Pin musi mieć 4 cyfry!</string>
+    <string name="should_contains_4_digits_error">Pin musi mieć 4 cyfry!</string>
 </resources>

@@ -15,7 +15,7 @@ class UserFriendlyExceptionService @Inject constructor(private val context: Cont
             when (throwable.message) {
                 PIN_IS_BLANK -> context.getString(R.string.blank_pin_error)
                 PIN_CANNOT_BE_CAST_TO_INT -> context.getString(R.string.string_pin_error)
-                PIN_SHOULD_CONTAINS_4_DIGITS -> context.getString(R.string.string_not_4_digits_error)
+                PIN_SHOULD_CONTAINS_4_DIGITS -> context.getString(R.string.should_contains_4_digits_error)
                 else -> ""
             }
         }
