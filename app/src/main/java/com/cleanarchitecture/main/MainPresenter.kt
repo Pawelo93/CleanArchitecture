@@ -8,11 +8,8 @@ import com.cleanarchitecture.interactors.services.UserFriendlyExceptionService
 import com.cleanarchitecture.interactors.useCases.VerifyPinAndGetUserUseCase
 import com.cleanarchitecture.rx.RxTransformer
 import com.cleanarchitecture.utils.applySchedulers
-import com.cleanarchitecture.utils.doOnMain
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
-import kotlin.system.measureNanoTime
-import kotlin.system.measureTimeMillis
 
 class MainPresenter(
     private val verifyPinAndGetUserUseCase: VerifyPinAndGetUserUseCase,
@@ -23,15 +20,19 @@ class MainPresenter(
 
     init {
         view.loginClicksWithPin
-            .throttleFirst(200, TimeUnit.MILLISECONDS, rxTransformer.io())
+            .throttleFirst(200, TimeUnit.MILLISECONDS, rxTransformer.main())
             .doOnNext { view.hideError() }
-            .flatMapSingle(::loadUser)
-            .doOnMain(rxTransformer)
-            .subscribe(::onLoadUser, ::onError)
+            .doOnNext(::loadUser)
+            .subscribe()
             .remember()
     }
 
-    private fun loadUser(pin: String) = verifyPinAndGetUserUseCase(pin).applySchedulers(rxTransformer)
+    private fun loadUser(pin: String) {
+        verifyPinAndGetUserUseCase(pin)
+            .applySchedulers(rxTransformer)
+            .subscribe(::onLoadUser, ::onError)
+            .remember()
+    }
 
     private fun onLoadUser(user: User) {
         view.showUser(user)
