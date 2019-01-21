@@ -4,41 +4,39 @@ import com.cleanarchitecture.entity.User
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
 import io.reactivex.Single
-
 import org.junit.Test
 
 class VerifyPinAndGetUserUseCaseTest {
-
-    private val getUserUseCase: GetUserUseCase = mock()
-    private val verifyPinAndGetUserUseCase = VerifyPinAndGetUserUseCase(getUserUseCase)
-
-    @Test
-    fun `throw error when pin is blank`() {
-        verifyPinAndGetUserUseCase("").test()
-            .assertErrorMessage("Pin is blank")
-    }
+    val verifyPinAndConvertToIntUseCase: VerifyPinAndConvertToIntUseCase = mock()
+    val getUserUseCase: GetUserUseCase = mock()
+    val verifyPinAndGetUserUseCase = VerifyPinAndGetUserUseCase(verifyPinAndConvertToIntUseCase, getUserUseCase)
 
     @Test
-    fun `throw error when pin is not int`() {
-        verifyPinAndGetUserUseCase("abc").test()
-            .assertErrorMessage("Pin cannot be cast to int")
-    }
-
-    @Test
-    fun `throw error when pin length is not 4`() {
-        verifyPinAndGetUserUseCase("123").test()
-            .assertErrorMessage("Pin should contain 4 digits")
-    }
-
-    @Test
-    fun `returns user when pin is good`() {
+    fun `returns user when pin is verified`() {
         val pin = "1234"
-        val user = User("Test")
+        val user = User()
+        whenever(verifyPinAndConvertToIntUseCase(pin)).thenReturn(Single.just(pin.toInt()))
         whenever(getUserUseCase(pin.toInt())).thenReturn(Single.just(user))
-
         verifyPinAndGetUserUseCase(pin).test()
-            .assertComplete()
-            .assertNoErrors()
             .assertValue(user)
+    }
+
+    @Test
+    fun `returns error when pin is wrong`() {
+        val pin = "123"
+        val throwable = Throwable()
+        whenever(verifyPinAndConvertToIntUseCase(pin)).thenReturn(Single.error(throwable))
+        verifyPinAndGetUserUseCase(pin).test()
+            .assertError(throwable)
+    }
+
+    @Test
+    fun `returns error when cant get user`() {
+        val pin = "1234"
+        val throwable = Throwable()
+        whenever(verifyPinAndConvertToIntUseCase(pin)).thenReturn(Single.just(pin.toInt()))
+        whenever(getUserUseCase(pin.toInt())).thenReturn(Single.error(throwable))
+        verifyPinAndGetUserUseCase(pin).test()
+            .assertError(throwable)
     }
 }

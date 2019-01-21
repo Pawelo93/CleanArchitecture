@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity(), MainView {
     }
 
     override fun showUser(user: User) {
-        loginButton.text = "Success"
+        loginButton.text = "Dobra robota ${user.name}"
     }
 
     override fun showError(message: String) {

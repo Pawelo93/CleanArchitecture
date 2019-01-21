@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class MainPresenter(
-    private val verifyPinAndGetUserUseCase: VerifyPinAndGetUserUseCase,
+    private val verifyPinAdGetUserUseCase: VerifyPinAndGetUserUseCase,
     private val userFriendlyExceptionService: UserFriendlyExceptionService,
     private val view: MainView,
     private val rxTransformer: RxTransformer
@@ -28,7 +28,7 @@ class MainPresenter(
     }
 
     private fun loadUser(pin: String) {
-        verifyPinAndGetUserUseCase(pin)
+        verifyPinAdGetUserUseCase(pin)
             .applySchedulers(rxTransformer)
             .subscribe(::onLoadUser, ::onError)
             .remember()
@@ -50,7 +50,7 @@ class MainPresenter(
     }
 
     class Factory @Inject constructor(
-        private val verifyPinAndGetUserUseCase: VerifyPinAndGetUserUseCase,
+        private val verifyPinAdGetUserUseCase: VerifyPinAndGetUserUseCase,
         private val userFriendlyExceptionService: UserFriendlyExceptionService,
         private val view: MainActivity,
         private val rxTransformer: RxTransformer
@@ -58,7 +58,7 @@ class MainPresenter(
 
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel?> create(modelClass: Class<T>) =
-            MainPresenter(verifyPinAndGetUserUseCase, userFriendlyExceptionService, view, rxTransformer) as T
+            MainPresenter(verifyPinAdGetUserUseCase, userFriendlyExceptionService, view, rxTransformer) as T
     }
 }
 
