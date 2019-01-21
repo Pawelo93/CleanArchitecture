@@ -36,8 +36,8 @@ class MainPresenterTest {
     }
 
     @Test
-    fun `loginClicks load user when pin is verified`() {
-        val pin = "1111"
+    fun `loginClicks load user when pin is consistent with the requirements`() {
+        val pin = "1234"
         val user = User("Test")
         whenever(verifyPinAndGetUserUseCase(pin)).thenReturn(Single.just(user))
         loginClicks.onNext(pin)
@@ -45,9 +45,9 @@ class MainPresenterTest {
     }
 
     @Test
-    fun `loginClicks shows user friendly error message when pin not contains 4 digits`() {
+    fun `loginClicks shows user friendly error message when pin is not contains 4 digits`() {
         val pin = "111"
-        val throwable = Throwable("Error")
+        val throwable = Throwable()
         val errorMessage = "Ups, coś poszło nie tak"
         whenever(verifyPinAndGetUserUseCase(pin)).thenReturn(Single.error(throwable))
         whenever(userFriendlyExceptionService(throwable)).thenReturn(Single.just(errorMessage))
@@ -56,7 +56,7 @@ class MainPresenterTest {
     }
 
     @Test
-    fun `loginClicks hides error`() {
+    fun `loginClicks hides error message`() {
         val pin = "1111"
         whenever(verifyPinAndGetUserUseCase(pin)).thenReturn(Single.just(User()))
         loginClicks.onNext(pin)

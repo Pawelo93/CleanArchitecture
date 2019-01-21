@@ -7,6 +7,7 @@ import io.reactivex.Single
 import org.junit.Test
 
 class VerifyPinAndGetUserUseCaseTest {
+
     val verifyPinAndConvertToIntUseCase: VerifyPinAndConvertToIntUseCase = mock()
     val getUserUseCase: GetUserUseCase = mock()
     val verifyPinAndGetUserUseCase = VerifyPinAndGetUserUseCase(verifyPinAndConvertToIntUseCase, getUserUseCase)

@@ -13,7 +13,7 @@ class GetUserUseCaseTest {
     private val getUserUseCase = GetUserUseCase(userApi)
 
     @Test
-    fun `loadUser returns user when api call is success`() {
+    fun `returns user when api call is success`() {
         val pin = 1234
         val user = User("Wacław")
         whenever(userApi.loadUser(pin)).thenReturn(Single.just(user))
@@ -25,9 +25,9 @@ class GetUserUseCaseTest {
     }
 
     @Test
-    fun `loadUser ends with failure when userApi throws error`() {
+    fun `ends with failure when userApi throws error`() {
         val pin = 1234
-        val throwable = Throwable("Error")
+        val throwable = Throwable()
         whenever(userApi.loadUser(pin)).thenReturn(Single.error(throwable))
 
         getUserUseCase(pin).test()
