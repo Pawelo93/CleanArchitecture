@@ -27,10 +27,16 @@ class MainActivity : AppCompatActivity(), MainView {
         setContentView(R.layout.activity_main)
 
         presenter = ViewModelProviders.of(this, factory).get(MainPresenter::class.java)
+        presenter.onCreateView(this)
+    }
+
+    override fun onPause() {
+        presenter.onViewDestroy()
+        super.onPause()
     }
 
     override fun showUser(user: User) {
-        loginButton.text = "Dobra robota ${user.name}"
+        loginButton.text = "Witaj ${user.name}"
     }
 
     override fun showError(message: String) {

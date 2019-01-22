@@ -14,17 +14,23 @@ import javax.inject.Inject
 class MainPresenter(
     private val verifyPinAdGetUserUseCase: VerifyPinAndGetUserUseCase,
     private val userFriendlyExceptionService: UserFriendlyExceptionService,
-    private val view: MainView,
     private val rxTransformer: RxTransformer
 ) : BasePresenter() {
 
-    init {
+    var view: MainView? = null
+
+    fun onCreateView(view: MainView) {
+        this.view = view
         view.loginClicksWithPin
             .throttleFirst(200, TimeUnit.MILLISECONDS, rxTransformer.main())
             .doOnNext { view.hideError() }
             .doOnNext(::loadUser)
             .subscribe()
             .remember()
+    }
+
+    fun onViewDestroy() {
+        view = null
     }
 
     private fun loadUser(pin: String) {
@@ -35,7 +41,7 @@ class MainPresenter(
     }
 
     private fun onLoadUser(user: User) {
-        view.showUser(user)
+        view?.showUser(user)
     }
 
     private fun onError(throwable: Throwable) {
@@ -46,19 +52,18 @@ class MainPresenter(
     }
 
     private fun onUserFriendlyError(message: String) {
-        view.showError(message)
+        view?.showError(message)
     }
 
     class Factory @Inject constructor(
         private val verifyPinAdGetUserUseCase: VerifyPinAndGetUserUseCase,
         private val userFriendlyExceptionService: UserFriendlyExceptionService,
-        private val view: MainActivity,
         private val rxTransformer: RxTransformer
     ) : ViewModelProvider.Factory {
 
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel?> create(modelClass: Class<T>) =
-            MainPresenter(verifyPinAdGetUserUseCase, userFriendlyExceptionService, view, rxTransformer) as T
+            MainPresenter(verifyPinAdGetUserUseCase, userFriendlyExceptionService, rxTransformer) as T
     }
 }
 

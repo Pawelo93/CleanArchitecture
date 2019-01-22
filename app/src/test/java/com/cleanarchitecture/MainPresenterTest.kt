@@ -30,9 +30,9 @@ class MainPresenterTest {
         mainPresenter = MainPresenter(
             verifyPinAndGetUserUseCase,
             userFriendlyExceptionService,
-            view,
             TestTransformer()
         )
+        mainPresenter.onCreateView(view)
     }
 
     @Test
