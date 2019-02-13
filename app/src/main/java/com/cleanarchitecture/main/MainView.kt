@@ -1,9 +1,10 @@
 package com.cleanarchitecture.main
 
+import android.arch.lifecycle.LifecycleOwner
 import com.cleanarchitecture.entity.User
 import io.reactivex.Observable
 
-interface MainView {
+interface MainView : LifecycleOwner{
 
     val loginClicksWithPin: Observable<String>
 

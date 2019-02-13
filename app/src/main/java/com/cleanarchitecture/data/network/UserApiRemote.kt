@@ -6,7 +6,7 @@ import java.util.concurrent.TimeUnit
 
 class UserApiRemote : UserApi {
     override fun loadUser(pin: Int): Single<User> {
-        return Single.just(User("Wacław"))
-            .delay(1000, TimeUnit.MILLISECONDS)
+        return Single.just(User("Janek"))
+//            .delay(1000, TimeUnit.MILLISECONDS)
     }
 }

@@ -15,7 +15,6 @@ import javax.inject.Inject
 class MainActivity : AppCompatActivity(), MainView {
 
     @Inject
-    lateinit var factory: MainPresenter.Factory
     lateinit var presenter: MainPresenter
 
     override val loginClicksWithPin: Observable<String>
@@ -26,13 +25,7 @@ class MainActivity : AppCompatActivity(), MainView {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        presenter = ViewModelProviders.of(this, factory).get(MainPresenter::class.java)
-        presenter.onCreateView(this)
-    }
-
-    override fun onPause() {
-        presenter.onViewDestroy()
-        super.onPause()
+        presenter.onCreateView()
     }
 
     override fun showUser(user: User) {

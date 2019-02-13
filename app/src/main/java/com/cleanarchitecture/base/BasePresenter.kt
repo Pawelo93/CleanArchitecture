@@ -1,10 +1,9 @@
 package com.cleanarchitecture.base
 
-import android.arch.lifecycle.ViewModel
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 
-open class BasePresenter : ViewModel() {
+open class BasePresenter {
 
     private val disposable = CompositeDisposable()
 
